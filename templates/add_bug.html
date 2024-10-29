@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Bug</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #e9ecef; /* Warna latar belakang */
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #fff; /* Warna putih untuk kontainer */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333; /* Warna teks judul */
+        }
+
+        .btn-submit {
+            background-color: #28a745; /* Warna tombol */
+            color: white;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .btn-submit:hover {
+            background-color: #218838; /* Warna hover yang lebih gelap */
+        }
+
+        .footer {
+            background-color: #343a40; /* Warna footer */
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">Add New Bug</h1>
+        <form id="add-bug-form">
+            <div class="mb-3">
+                <label for="platform" class="form-label">Platform</label>
+                <select class="form-select" id="platform" required>
+                    <option value="" disabled selected>Select Platform</option>
+                    <option value="Ios">Ios</option>
+                    <option value="Android">Android</option>
+                    <option value="Web">Web</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="session" class="form-label">Session</label>
+                <input type="text" class="form-control" id="session" required>
+            </div>
+            <div class="mb-3">
+                <label for="checking_by_developer" class="form-label">Checking by Developer</label>
+                <select class="form-select" id="checking_by_developer" >
+                    <option value="" disabled selected>Select Status</option>
+                    <option value="Valid">Valid</option>
+                    <option value="Not Valid">Not Valid</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="note" class="form-label">Note</label>
+                <textarea class="form-control" id="note" rows="3" ></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="issue" class="form-label">Issue</label>
+                <select class="form-select" id="issue" required>
+                    <option value="" disabled selected>Select Issue Type</option>
+                    <option value="BE">Back End</option>
+                    <option value="FE">Front End</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="summary" class="form-label">Summary</label>
+                <textarea class="form-control" id="summary" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="reported_by" class="form-label">Reported By</label>
+                <input type="text" class="form-control" id="reported_by" required>
+            </div>
+            <div class="mb-3">
+                <label for="expectation" class="form-label">Expectation</label>
+                <textarea class="form-control" id="expectation" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="priority" class="form-label">Priority</label>
+                <select class="form-select" id="priority" required>
+                    <option value="" disabled selected>Select Priority</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="evidence_status" class="form-label">Evidence Status</label>
+                <input type="text" class="form-control" id="evidence_status" required>
+            </div>
+            <div class="mb-3">
+                <label for="retest_bug" class="form-label">Retest Bug</label>
+                <input type="text" class="form-control" id="retest_bug" >
+            </div>
+              <div class="mb-3">
+                <label for="status" class="form-label">Status Bug</label>
+                <select class="form-select" id="status" required>
+                    <option value="" disabled selected>Select Status</option>
+                    <option value="Todo">TODO</option>
+                    <option value="Fixing in Progress">Fixing In Progress</option>
+                    <option value="Qa in Progress">Qa in Progress</option>
+                    <option value="Done">Done</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-submit">Submit Bug</button>
+        </form>
+    </div>
+  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#add-bug-form").on("submit", function (e) {
+                e.preventDefault(); // Mencegah form dari pengiriman default
+
+                const newBug = {
+                    platform: $("#platform").val(),
+                    session: $("#session").val(),
+                    checking_by_developer: $("#checking_by_developer").val(),
+                    note: $("#note").val(),
+                    issue: $("#issue").val(),
+                    summary: $("#summary").val(),
+                    reported_by: $("#reported_by").val(),
+                    expectation: $("#expectation").val(),
+                    priority: $("#priority").val(),
+                    evidence_status: $("#evidence_status").val(),
+                    retest_bug: $("#retest_bug").val(),
+                    status: $("#status").val()
+                };
+
+                $.ajax({
+                    url: "/bugs",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(newBug),
+                    success: function (response) {
+                        alert("Bug added successfully!");
+                        // Reset form after successful submission
+                        $("#add-bug-form")[0].reset();
+                    },
+                    error: function (error) {
+                        alert("Error adding bug. Please try again.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
