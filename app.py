@@ -69,17 +69,19 @@ def get_bug_details(bug_id):
         return jsonify({"error": "Bug not found"}), 404
 
 
+# Perbarui route add_bug agar mendukung project_id
 @app.route("/bugs", methods=["POST"])
 def add_bug():
     try:
         new_bug = request.json
-        # Validasi data di sini jika perlu
         conn = get_db_connection()
         cursor = conn.cursor()
+
         cursor.execute(
             """
-            INSERT INTO bug_management.bugs (platform, session, checking_by_developer, note, issue, summary, reported_by, expectation, priority, evidence_status, retest_bug,status)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            INSERT INTO bug_management.bugs (platform, session, checking_by_developer, note, issue, 
+                summary, reported_by, expectation, priority, evidence_status, retest_bug, status, project_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
             """,
             (
                 new_bug["platform"],
@@ -94,6 +96,7 @@ def add_bug():
                 new_bug["evidence_status"],
                 new_bug["retest_bug"],
                 new_bug["status"],
+                new_bug["project_id"],
             ),
         )
         conn.commit()
@@ -101,10 +104,7 @@ def add_bug():
         conn.close()
         return jsonify(new_bug), 200
     except Exception as e:
-        return (
-            jsonify({"error": str(e)}),
-            400,
-        )  # Mengembalikan kesalahan sebagai respons
+        return jsonify({"error": str(e)}), 400
 
 
 @app.route("/bug/<int:bug_id>", methods=["PUT"])
@@ -153,6 +153,75 @@ def update_bug(bug_id):
 @app.route("/add-bug", methods=["GET"])
 def add_bug_page():
     return render_template("add_bug.html")
+
+
+# Route untuk mendapatkan semua proyek
+@app.route("/projects", methods=["GET"])
+def get_projects():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM bug_management.projects;")
+    projects = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return jsonify([{"id": p[0], "name": p[1], "description": p[2]} for p in projects])
+
+
+# Mendapatkan bug berdasarkan ID proyek
+@app.route("/projects/<int:project_id>/bugs", methods=["GET"])
+def get_bugs_by_project(project_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT * FROM bug_management.bugs WHERE project_id = %s ORDER BY id ASC;",
+        (project_id,),
+    )
+    bugs = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return jsonify(bugs)
+
+
+@app.route("/create-project")
+def create_project():
+    return render_template("create_project.html")  # File form Create Project
+
+
+@app.route("/projects", methods=["POST"])
+def add_project():
+    try:
+        # Mengambil data proyek dari request JSON
+        new_project = request.json
+
+        # Koneksi ke database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Menyimpan data proyek ke database
+        cursor.execute(
+            """
+            INSERT INTO bug_management.projects (name, description)
+            VALUES (%s, %s);
+            """,
+            (
+                new_project["name"],
+                new_project.get(
+                    "description", ""
+                ),  # Menggunakan get untuk default jika description tidak ada
+            ),
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return (
+            jsonify(new_project),
+            201,
+        )  # Mengembalikan data proyek yang ditambahkan dengan status 201 Created
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400  # Mengembalikan error jika terjadi
 
 
 if __name__ == "__main__":

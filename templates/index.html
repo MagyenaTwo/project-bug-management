@@ -165,6 +165,9 @@ body {
                     <li class="nav-item">
                         <a class="nav-link" href="/add-bug">Add Bug</a>
                     </li>
+                     <li class="nav-item">
+                    <a class="nav-link" href="/create-project">Create Project</a>  <!-- Link ke halaman Create Project -->
+                </li>
                 </ul>
             </div>
         </div>
@@ -203,11 +206,20 @@ body {
         </div>
         
         
-        <!-- Filter Section -->
-   <div class="filter-container mb-4 d-flex align-items-center justify-content-between">
-    <a href="/add-bug" class="btn btn-add">Add New Bug <i class="fas fa-plus"></i></a>
-    
-    <div class="row g-3 filter-options">
+      <!-- Filter Section -->
+<div class="filter-container mb-4 d-flex align-items-center justify-content-between flex-wrap">
+    <!-- Tombol Add New Bug di kiri -->
+    <a href="/add-bug" class="btn btn-add btn-success d-flex align-items-center mb-2">
+        <i class="fas fa-plus me-2"></i>Add New Bug
+    </a>
+
+    <!-- Filter di kanan -->
+    <div class="filters d-flex flex-wrap align-items-center ms-auto gap-2">
+        <div class="col">
+            <select id="filter-project" class="form-select">
+                <option value="">All Projects</option>
+            </select>
+        </div>
         <div class="col">
             <select id="filter-platform" class="form-select">
                 <option value="">All Platforms</option>
@@ -235,6 +247,7 @@ body {
         </div>
     </div>
 </div>
+
 
         <h2 class="mt-5">Bug List</h2>
         <table class="table table-striped">
