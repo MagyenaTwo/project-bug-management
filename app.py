@@ -155,35 +155,6 @@ def add_bug_page():
     return render_template("add_bug.html")
 
 
-# Route untuk mendapatkan semua proyek
-@app.route("/projects", methods=["GET"])
-def get_projects():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM bug_management.projects;")
-    projects = cursor.fetchall()
-    cursor.close()
-    conn.close()
-
-    return jsonify([{"id": p[0], "name": p[1], "description": p[2]} for p in projects])
-
-
-# Mendapatkan bug berdasarkan ID proyek
-@app.route("/projects/<int:project_id>/bugs", methods=["GET"])
-def get_bugs_by_project(project_id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT * FROM bug_management.bugs WHERE project_id = %s ORDER BY id ASC;",
-        (project_id,),
-    )
-    bugs = cursor.fetchall()
-    cursor.close()
-    conn.close()
-
-    return jsonify(bugs)
-
-
 @app.route("/create-project")
 def create_project():
     return render_template("create_project.html")  # File form Create Project
@@ -222,6 +193,23 @@ def add_project():
         )  # Mengembalikan data proyek yang ditambahkan dengan status 201 Created
     except Exception as e:
         return jsonify({"error": str(e)}), 400  # Mengembalikan error jika terjadi
+
+
+@app.route("/projects", methods=["GET"])
+def get_projects():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name FROM bug_management.projects;")
+        projects = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        # Ubah data menjadi list of dict agar mudah digunakan di frontend
+        project_list = [{"id": row[0], "name": row[1]} for row in projects]
+        return jsonify(project_list), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":

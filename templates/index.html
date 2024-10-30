@@ -375,25 +375,40 @@ body {
             });
         }
 
-        // Filter functionality
-        function filterBugs() {
-            let platformValue = $("#filter-platform").val();
-            let priorityValue = $("#filter-priority").val();
-            let statusValue = $("#filter-status").val();
+       // Filter functionality
+       function filterBugs() {
+    let platformValue = $("#filter-platform").val();
+    let priorityValue = $("#filter-priority").val();
+    let statusValue = $("#filter-status").val();
+    let projectValue = $("#filter-project").val(); // Ambil nilai filter proyek
 
-            let filteredBugs = window.bugData.filter(bug => {
-                let platformMatch = platformValue === "" || bug[2] === platformValue; // Sesuaikan dengan indeks platform
-                let priorityMatch = priorityValue === "" || bug[10] === priorityValue; // 'priority'
-                let statusMatch = statusValue === "" || bug[15] === statusValue; // 'status'
 
-                return platformMatch && priorityMatch && statusMatch;
+    let filteredBugs = window.bugData.filter(bug => {
+    
+        let platformMatch = platformValue === "" || bug[2] === platformValue; // Indeks platform
+        let priorityMatch = priorityValue === "" || bug[10] === priorityValue; // Indeks priority
+        let statusMatch = statusValue === "" || bug[15] === statusValue; // Indeks status
+        let projectMatch = projectValue === "" || Number(bug[16]) === Number(projectValue); // Indeks proyek (bug[16])
+
+      
+
+        return platformMatch && priorityMatch && statusMatch && projectMatch;
+    });
+
+
+    displayBugs(filteredBugs); // Tampilkan bug yang sudah difilter
+}
+
+
+        // Ambil data proyek dan tambahkan ke dropdown
+        $.get("/projects", function (projects) {
+            projects.forEach(project => {
+                $("#filter-project").append(`<option value="${project.id}">${project.name}</option>`);
             });
-
-            displayBugs(filteredBugs); // Tampilkan bug yang sudah difilter
-        }
+        });
 
         // Event listeners for filters
-        $("#filter-platform, #filter-priority, #filter-status").on("change", filterBugs);
+        $("#filter-platform, #filter-priority, #filter-status, #filter-project").on("change", filterBugs);
     });
 
     // Reset details ketika modal ditutup
@@ -449,8 +464,8 @@ function showBugDetails(bugId) {
                 <div>
                     <label>Issue:</label>
                     <select class="form-select" name="issue">
-                        <option value="Backend" ${data.issue === 'Backend' ? 'selected' : ''}>Backend</option>
-                        <option value="Frontend" ${data.issue === 'Frontend' ? 'selected' : ''}>Frontend</option>
+                        <option value="BE" ${data.issue === 'Backend' ? 'selected' : ''}>Backend</option>
+                        <option value="FE" ${data.issue === 'Frontend' ? 'selected' : ''}>Frontend</option>
                     </select>
                 </div>
                 <div>

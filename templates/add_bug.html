@@ -137,11 +137,29 @@
   
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
+         $(document).ready(function () {
+            // Mengambil daftar proyek saat halaman dimuat
+            $.ajax({
+                url: "/projects",  // URL untuk mengambil data proyek
+                type: "GET",
+                success: function (projects) {
+                    projects.forEach(project => {
+                        $("#project-select").append(
+                            `<option value="${project.id}">${project.name}</option>`
+                        );
+                    });
+                },
+                error: function () {
+                    alert("Failed to load projects.");
+                }
+            });
+
+            // Event listener untuk submit form
             $("#add-bug-form").on("submit", function (e) {
                 e.preventDefault(); // Mencegah form dari pengiriman default
 
                 const newBug = {
+                    project_id: $("#project-select").val(), // Menyimpan ID proyek yang dipilih
                     platform: $("#platform").val(),
                     session: $("#session").val(),
                     checking_by_developer: $("#checking_by_developer").val(),
@@ -163,7 +181,7 @@
                     data: JSON.stringify(newBug),
                     success: function (response) {
                         alert("Bug added successfully!");
-                        // Reset form after successful submission
+                        // Reset form setelah pengiriman berhasil
                         $("#add-bug-form")[0].reset();
                     },
                     error: function (error) {
