@@ -202,21 +202,21 @@ body {
             </div>
         </div>
         
-        <a href="/add-bug" class="btn btn-add">Add New Bug <i class="fas fa-plus"></i></a>
+        
         <!-- Filter Section -->
-   
-<div class="filter-container mb-4">
-    <div class="filter-title">Filter</div>
-    <div class="row g-3">
-        <div class="col-md-4">
+   <div class="filter-container mb-4 d-flex align-items-center justify-content-between">
+    <a href="/add-bug" class="btn btn-add">Add New Bug <i class="fas fa-plus"></i></a>
+    
+    <div class="row g-3 filter-options">
+        <div class="col">
             <select id="filter-platform" class="form-select">
-                <option value=""><i class="filter-icon"></i>All Platforms</option>
+                <option value="">All Platforms</option>
                 <option value="Web">🌐 Web</option>
                 <option value="Ios">📱 iOS</option>
                 <option value="Android">🤖 Android</option>
             </select>
         </div>
-        <div class="col-md-4">
+        <div class="col">
             <select id="filter-priority" class="form-select">
                 <option value="">All Priorities</option>
                 <option value="High">🔥 High</option>
@@ -224,7 +224,7 @@ body {
                 <option value="Low">✅ Low</option>
             </select>
         </div>
-        <div class="col-md-4">
+        <div class="col">
             <select id="filter-status" class="form-select">
                 <option value="">All Status</option>
                 <option value="Todo">📝 Todo</option>
@@ -235,6 +235,7 @@ body {
         </div>
     </div>
 </div>
+
         <h2 class="mt-5">Bug List</h2>
         <table class="table table-striped">
             <thead>
