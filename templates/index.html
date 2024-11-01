@@ -300,6 +300,21 @@ body {
                 <div id="bug-details">
                     <!-- Detail bug akan ditambahkan di sini -->
                 </div>
+                <div id="comments-section">
+                    <h5>Comments</h5>
+                    <div id="comments-list">
+                        <!-- Komentar akan ditambahkan di sini -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment-username" class="form-label">Username</label>
+                        <input type="text" id="comment-username" class="form-control" placeholder="Enter your name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment-text" class="form-label">Comment</label>
+                        <textarea id="comment-text" class="form-control" rows="3" placeholder="Write your comment"></textarea>
+                    </div>
+                    <button id="addComment" class="btn btn-primary">Add Comment</button>
+                </div>
                 <button id="saveChanges" class="btn btn-primary mt-3" style="display:none;">Save Changes</button>
             </div>
         </div>
@@ -446,6 +461,7 @@ body {
 
 
         // Function to fetch and show bug details
+// Function to fetch and show bug details
 function showBugDetails(bugId) {
     $.get(`/bug/${bugId}`, function (data) {
         if (data.error) {
@@ -525,6 +541,54 @@ function showBugDetails(bugId) {
                     </select>
                 </div>
             `);
+
+            // Ambil komentar untuk bug ini
+            $.get(`/bug/${bugId}/comments`, function (comments) {
+                const commentsList = comments.map(comment => `
+                    <div class="comment">
+                        <strong>${comment.username}</strong>
+                        <p>${comment.text}</p>
+                        <small>${comment.time}</small>
+                    </div>
+                `).join("");
+                $("#comments-list").html(commentsList);
+            });
+
+            // Menambahkan komentar baru
+            $("#addComment").off('click').on('click', function () {
+                const username = $("#comment-username").val();
+                const text = $("#comment-text").val();
+
+                // Validasi input
+                if (!username || !text) {
+                    alert("Username and comment text are required!");
+                    return;
+                }
+
+                // Kirim komentar baru ke server
+                $.ajax({
+                    url: `/bug/${bugId}/comments`,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ username: username, text: text }),
+                    success: function (newComment) {
+                        // Tambahkan komentar yang baru ditambahkan ke dalam daftar
+                        $("#comments-list").append(`
+                            <div class="comment">
+                                <strong>${newComment.username}</strong>
+                                <p>${newComment.text}</p>
+                                <small>${new Date().toLocaleString()}</small>
+                            </div>
+                        `);
+                        // Kosongkan input
+                        $("#comment-username").val('');
+                        $("#comment-text").val('');
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error adding comment: " + error);
+                    }
+                });
+            });
 
             // Save changes on button click
             $("#saveChanges").show().off('click').on('click', function () {

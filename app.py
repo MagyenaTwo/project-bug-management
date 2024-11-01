@@ -212,5 +212,69 @@ def get_projects():
         return jsonify({"error": str(e)}), 500
 
 
+# Route untuk menambahkan komentar
+@app.route("/bug/<int:bug_id>/comments", methods=["POST"])
+def add_comment(bug_id):
+
+    data = request.get_json()
+    username = data.get("username")
+    text = data.get("text")
+
+    if not username or not text:
+        return jsonify({"error": "Username and text are required."}), 400
+
+    # SQL untuk menambahkan komentar
+    new_comment = """
+    INSERT INTO bug_management.comments (bug_id, username, text) 
+    VALUES (%s, %s, %s) RETURNING id;
+    """
+    print(f"Received comment for bug_id: {bug_id}")
+    try:
+        conn = get_db_connection()  # Membuka koneksi database
+        cursor = conn.cursor()
+        cursor.execute(new_comment, (bug_id, username, text))
+        conn.commit()
+        comment_id = cursor.fetchone()[0]
+        cursor.close()
+        conn.close()  # Menutup koneksi database
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    return (
+        jsonify(
+            {"id": comment_id, "bug_id": bug_id, "username": username, "text": text}
+        ),
+        201,
+    )
+
+
+# Route untuk mengambil komentar berdasarkan bug_id
+@app.route("/bug/<int:bug_id>/comments", methods=["GET"])
+def get_comments(bug_id):
+    try:
+        conn = get_db_connection()  # Membuka koneksi database
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT username, text, time FROM bug_management.comments WHERE bug_id = %s ORDER BY time ASC;",
+            (bug_id,),
+        )
+        comments = cursor.fetchall()
+        cursor.close()
+        conn.close()  # Menutup koneksi database
+
+        return jsonify(
+            [
+                {
+                    "username": comment[0],
+                    "text": comment[1],
+                    "time": comment[2].strftime("%Y-%m-%d %H:%M:%S"),
+                }
+                for comment in comments
+            ]
+        )
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == "__main__":
     app.run(debug=True)
