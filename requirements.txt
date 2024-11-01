@@ -10,3 +10,5 @@ SQLAlchemy==2.0.16
 supabase
 requests
 psycopg2-binary
+pytz
+
