@@ -504,7 +504,7 @@ body {
 });
 
 
-        // Function to fetch and show bug details
+    
 // Function to fetch and show bug details
 function showBugDetails(bugId) {
     $.get(`/bug/${bugId}`, function (data) {
@@ -587,16 +587,20 @@ function showBugDetails(bugId) {
             `);
 
             // Ambil komentar untuk bug ini
-            $.get(`/bug/${bugId}/comments`, function (comments) {
-                const commentsList = comments.map(comment => `
-                    <div class="comment">
-                        <strong>${comment.username}</strong>
-                        <p>${comment.text}</p>
-                        <small>${comment.time}</small>
-                    </div>
-                `).join("");
-                $("#comments-list").html(commentsList);
-            });
+$.get(`/bug/${bugId}/comments`, function (comments) {
+    const commentsList = comments.map(comment => {
+        // Mengonversi waktu komentar ke waktu lokal Jakarta
+        const commentTime = new Date(comment.time + ' UTC'); // Menganggap comment.time adalah dalam UTC
+        return `
+            <div class="comment">
+                <strong>${comment.username}</strong>
+                <p>${comment.text}</p>
+                <small>${commentTime.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })}</small>
+            </div>
+        `;
+    }).join("");
+    $("#comments-list").html(commentsList);
+});
 
             // Menambahkan komentar baru
             $("#addComment").off('click').on('click', function () {
