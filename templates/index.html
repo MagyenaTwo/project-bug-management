@@ -162,6 +162,47 @@ body {
     z-index: 1; /* Buat header tetap di atas konten tbody */
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
 }
+ #comments-section {
+        border-top: 1px solid #e0e0e0;
+        padding-top: 1rem;
+    }
+
+    #comments-list {
+        max-height: 200px; /* Batasi tinggi agar komentar dapat digulir */
+        overflow-y: auto;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .comment {
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+        border: 1px solid #007bff; /* Warna border */
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+
+    .comment .username {
+        font-weight: bold;
+        color: #007bff; /* Warna username */
+    }
+
+    .comment .timestamp {
+        font-size: 0.85rem;
+        color: #888;
+    }
+
+    .comment .text {
+        margin-top: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .comment-input {
+        margin-bottom: 1rem;
+    }
 
     </style>
 </head>
@@ -288,7 +329,7 @@ body {
 
 
 
-   <!-- Modal untuk menampilkan detail bug -->
+  <!-- Modal untuk menampilkan detail bug -->
 <div class="modal fade" id="bugDetailModal" tabindex="-1" aria-labelledby="bugDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -300,21 +341,24 @@ body {
                 <div id="bug-details">
                     <!-- Detail bug akan ditambahkan di sini -->
                 </div>
-                <div id="comments-section">
+
+                <div id="comments-section" class="mt-4">
                     <h5>Comments</h5>
-                    <div id="comments-list">
+                    <div id="comments-list" class="mb-3">
                         <!-- Komentar akan ditambahkan di sini -->
                     </div>
-                    <div class="mb-3">
+                    
+                    <div class="comment-input mb-3">
                         <label for="comment-username" class="form-label">Username</label>
                         <input type="text" id="comment-username" class="form-control" placeholder="Enter your name">
                     </div>
-                    <div class="mb-3">
+                    <div class="comment-input mb-3">
                         <label for="comment-text" class="form-label">Comment</label>
                         <textarea id="comment-text" class="form-control" rows="3" placeholder="Write your comment"></textarea>
                     </div>
                     <button id="addComment" class="btn btn-primary">Add Comment</button>
                 </div>
+
                 <button id="saveChanges" class="btn btn-primary mt-3" style="display:none;">Save Changes</button>
             </div>
         </div>

@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import psycopg2
+from datetime import datetime
+import pytz
 
 app = Flask(__name__)
 
@@ -262,12 +264,17 @@ def get_comments(bug_id):
         cursor.close()
         conn.close()  # Menutup koneksi database
 
+        # Waktu Jakarta
+        jakarta_tz = pytz.timezone("Asia/Jakarta")
+
         return jsonify(
             [
                 {
                     "username": comment[0],
                     "text": comment[1],
-                    "time": comment[2].strftime("%Y-%m-%d %H:%M:%S"),
+                    "time": comment[2]
+                    .astimezone(jakarta_tz)
+                    .strftime("%Y-%m-%d %H:%M:%S"),
                 }
                 for comment in comments
             ]
