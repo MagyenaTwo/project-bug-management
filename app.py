@@ -283,5 +283,13 @@ def get_comments(bug_id):
         return jsonify({"error": str(e)}), 500
 
 
+@app.route("/get_comments_count/<int:bug_id>", methods=["GET"])
+def get_comments_count(bug_id):
+    count = get_comments_count(
+        bug_id
+    )  # Implementasikan fungsi ini untuk mengambil jumlah komentar dari database
+    return jsonify({"count": count})
+
+
 if __name__ == "__main__":
     app.run(debug=True)

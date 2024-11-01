@@ -330,16 +330,18 @@ body {
                 </div>
 
                 <div id="comments-section" class="mt-4">
-                    <h5>Comments</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5>Comments <span id="comments-count">(0)</span></h5>
+                    </div>
                     <div id="comments-list" class="mb-3">
                         <!-- Komentar akan ditambahkan di sini -->
                     </div>
 
-                    <div class="comment-input mb-3">
+                    <div class="mb-3">
                         <label for="comment-username" class="form-label">Username</label>
                         <input type="text" id="comment-username" class="form-control" placeholder="Enter your name">
                     </div>
-                    <div class="comment-input mb-3">
+                    <div class="mb-3">
                         <label for="comment-text" class="form-label">Comment</label>
                         <textarea id="comment-text" class="form-control" rows="2" placeholder="Write your comment"></textarea>
                     </div>
@@ -490,7 +492,7 @@ body {
 
 
     
-// Function to fetch and show bug details
+/// Function to fetch and show bug details
 function showBugDetails(bugId) {
     $.get(`/bug/${bugId}`, function (data) {
         if (data.error) {
@@ -572,20 +574,25 @@ function showBugDetails(bugId) {
             `);
 
             // Ambil komentar untuk bug ini
-$.get(`/bug/${bugId}/comments`, function (comments) {
-    const commentsList = comments.map(comment => {
-        // Mengonversi waktu komentar ke waktu lokal Jakarta
-        const commentTime = new Date(comment.time + ' UTC'); // Menganggap comment.time adalah dalam UTC
-        return `
-            <div class="comment">
-                <strong>${comment.username}</strong>
-                <p>${comment.text}</p>
-                <small>${commentTime.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })}</small>
-            </div>
-        `;
-    }).join("");
-    $("#comments-list").html(commentsList);
-});
+            $.get(`/bug/${bugId}/comments`, function (comments) {
+                const commentsList = comments.map(comment => {
+                    // Mengonversi waktu komentar ke waktu lokal Jakarta
+                    const commentTime = new Date(comment.time + ' UTC'); // Menganggap comment.time adalah dalam UTC
+                    return `
+                        <div class="comment">
+                            <strong>${comment.username}</strong>
+                            <p>${comment.text}</p>
+                            <small>${commentTime.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })}</small>
+                        </div>
+                    `;
+                }).join("");
+                $("#comments-list").html(commentsList);
+
+                // Menampilkan jumlah komentar
+        
+              $("#comments-count").text(`(${comments.length})`);
+                
+            });
 
             // Menambahkan komentar baru
             $("#addComment").off('click').on('click', function () {
@@ -616,6 +623,10 @@ $.get(`/bug/${bugId}/comments`, function (comments) {
                         // Kosongkan input
                         $("#comment-username").val('');
                         $("#comment-text").val('');
+
+                        // Update jumlah komentar
+                        const currentCount = parseInt($("#comments-count").text().match(/\d+/)[0]) || 0;
+                        $("#comments-count").text(`Jumlah Komentar: ${currentCount + 1}`);
                     },
                     error: function (xhr, status, error) {
                         alert("Error adding comment: " + error);
