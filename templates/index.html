@@ -162,48 +162,35 @@ body {
     z-index: 1; /* Buat header tetap di atas konten tbody */
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
 }
- #comments-section {
-        border-top: 1px solid #e0e0e0;
-        padding-top: 1rem;
-    }
-
+  /* Styling untuk komentar */
     #comments-list {
-        max-height: 200px; /* Batasi tinggi agar komentar dapat digulir */
-        overflow-y: auto;
-        margin-bottom: 1rem;
-        padding: 1rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 5px;
-        background-color: #f9f9f9;
+        max-height: 150px; /* Batas tinggi yang lebih pendek untuk scrollbar */
+        overflow-y: auto; /* Scrollbar jika konten melebihi batas tinggi */
+        border: 1px solid #e0e0e0; /* Garis batas */
+        border-radius: 5px; /* Sudut melengkung */
+        padding: 5px; /* Jarak dalam yang lebih sedikit */
+        background-color: #f9f9f9; /* Warna latar belakang */
     }
 
     .comment {
-        margin-bottom: 1rem;
-        padding: 0.5rem;
-        border: 1px solid #007bff; /* Warna border */
-        border-radius: 5px;
-        background-color: #ffffff;
+        padding: 5px; /* Jarak dalam komentar */
+        border-bottom: 1px solid #e0e0e0; /* Garis bawah antara komentar */
     }
 
-    .comment .username {
-        font-weight: bold;
-        color: #007bff; /* Warna username */
+    .comment:last-child {
+        border-bottom: none; /* Menghapus garis bawah pada komentar terakhir */
     }
 
-    .comment .timestamp {
-        font-size: 0.85rem;
-        color: #888;
+    .comment strong {
+        display: block; /* Membuat username menjadi baris baru */
+        margin-bottom: 2px; /* Jarak bawah antara username dan teks komentar */
     }
 
-    .comment .text {
-        margin-top: 0.5rem;
-        font-size: 1rem;
+    .comment small {
+        display: block; /* Membuat waktu menjadi baris baru */
+        color: #888; /* Warna abu-abu untuk waktu */
+        font-size: 0.85em; /* Ukuran font lebih kecil untuk waktu */
     }
-
-    .comment-input {
-        margin-bottom: 1rem;
-    }
-
     </style>
 </head>
 
@@ -329,7 +316,7 @@ body {
 
 
 
-  <!-- Modal untuk menampilkan detail bug -->
+<!-- Modal untuk menampilkan detail bug -->
 <div class="modal fade" id="bugDetailModal" tabindex="-1" aria-labelledby="bugDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -347,14 +334,14 @@ body {
                     <div id="comments-list" class="mb-3">
                         <!-- Komentar akan ditambahkan di sini -->
                     </div>
-                    
+
                     <div class="comment-input mb-3">
                         <label for="comment-username" class="form-label">Username</label>
                         <input type="text" id="comment-username" class="form-control" placeholder="Enter your name">
                     </div>
                     <div class="comment-input mb-3">
                         <label for="comment-text" class="form-label">Comment</label>
-                        <textarea id="comment-text" class="form-control" rows="3" placeholder="Write your comment"></textarea>
+                        <textarea id="comment-text" class="form-control" rows="2" placeholder="Write your comment"></textarea>
                     </div>
                     <button id="addComment" class="btn btn-primary">Add Comment</button>
                 </div>
@@ -364,8 +351,6 @@ body {
         </div>
     </div>
 </div>
-
-
 
  <script>
    $(document).ready(function () {
