@@ -102,40 +102,22 @@ body {
         .modal-backdrop {
             opacity: 0.5; /* Atur opasitas sesuai kebutuhan */
         }
-.high-priority {
-    background-color: red !important;
-    color: white !important;
+.priority-box, .status-box {
+    padding: 0px 5px;
+    border-radius: 10px;
+    color: white;
+    font-weight: normal;
+    display: inline-block;
 }
 
-.medium-priority {
-    background-color: yellow !important;
-    color: black !important;
-}
+.high-priority { background-color: red; }
+.medium-priority { background-color: yellow; color: black; }
+.low-priority { background-color: green; }
 
-.low-priority {
-    background-color: green !important;
-    color: white !important;
-}
-
-.table .status-todo {
-    background-color: red;
-    color: white; /* Merah untuk Todo */
-}
-
-.table .status-fixing {
-    background-color: yellow;
-    color: black; /* Kuning untuk Fixing in Progress */
-}
-
-.table .status-qa {
-    background-color: lightgreen;
-    color: black; /* Hijau muda untuk QA in Progress */
-}
-
-.table .status-done {
-    background-color: darkgreen;
-    color: white; /* Hijau tua untuk Done */
-}
+.status-todo { background-color: red; }
+.status-fixing { background-color: yellow; color: black; }
+.status-qa { background-color: lightgreen; color: black; }
+.status-done { background-color: darkgreen; }
 
 .evidence-link {
     color: grey; /* Warna teks */
@@ -294,7 +276,7 @@ body {
 </div>
 
 
-      <div class="table-wrapper" style="max-height: 400px; overflow-y: auto;">
+     <div class="table-wrapper" style="max-height: 400px; overflow-y: auto;">
     <table class="table table-striped table-scrollable">
         <thead>
             <tr>
@@ -313,7 +295,6 @@ body {
         </tbody>
     </table>
 </div>
-
 
 
 <!-- Modal untuk menampilkan detail bug -->
@@ -379,63 +360,68 @@ body {
             $("#bug-list").empty(); // Kosongkan tabel sebelum menambahkan data baru
 
             // Iterasi setiap bug dan tambahkan ke dalam tabel
-            bugs.forEach((bug, index) => {
-                let priorityClass = '';
-                let statusClass = '';
+           bugs.forEach((bug, index) => {
+    let priorityClass = '';
+    let statusClass = '';
 
-                // Tetapkan kelas berdasarkan prioritas
-                switch (bug[10]) {
-                    case 'High':
-                        priorityClass = 'high-priority';
-                        break;
-                    case 'Medium':
-                        priorityClass = 'medium-priority';
-                        break;
-                    case 'Low':
-                        priorityClass = 'low-priority';
-                        break;
-                    default:
-                        priorityClass = '';
-                }
+    // Tetapkan kelas berdasarkan prioritas
+    switch (bug[10]) {
+        case 'High':
+            priorityClass = 'high-priority';
+            break;
+        case 'Medium':
+            priorityClass = 'medium-priority';
+            break;
+        case 'Low':
+            priorityClass = 'low-priority';
+            break;
+        default:
+            priorityClass = '';
+    }
 
-                // Tentukan kelas berdasarkan status bug
-                switch (bug[15]) {
-                    case 'Todo':
-                        statusClass = 'status-todo';
-                        break;
-                    case 'Fixing in Progress':
-                        statusClass = 'status-fixing';
-                        break;
-                    case 'QA in Progress':
-                        statusClass = 'status-qa';
-                        break;
-                    case 'Done':
-                        statusClass = 'status-done';
-                        break;
-                    default:
-                        statusClass = '';
-                }
+    // Tentukan kelas berdasarkan status bug
+    switch (bug[15]) {
+        case 'Todo':
+            statusClass = 'status-todo';
+            break;
+        case 'Fixing in Progress':
+            statusClass = 'status-fixing';
+            break;
+        case 'QA in Progress':
+            statusClass = 'status-qa';
+            break;
+        case 'Done':
+            statusClass = 'status-done';
+            break;
+        default:
+            statusClass = '';
+    }
 
-                // Tambahkan baris bug dengan kelas warna prioritas
-                $("#bug-list").append(`
-                    <tr>
-                        <td>${index + 1}</td> <!-- Auto-increment nomor -->
-                        <td>${bug[6]}</td> <!-- 'issue' -->
-                        <td>${bug[2]}</td> <!-- 'platform' -->
-                        <td>${bug[7]}</td> <!-- 'reported_by' -->
-                        <td class="${priorityClass}">${bug[10]}</td> <!-- 'priority' -->
-                        <td>
-                            <a href="${bug[11]}" class="evidence-link" target="_blank">
-                                ${truncateText(bug[11], 25)}
-                            </a>
-                        </td> <!-- Evidence -->
-                        <td class="${statusClass}">${bug[15]}</td> <!-- Status -->
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm" 
-                                data-bs-toggle="modal" data-bs-target="#bugDetailModal" 
-                                onclick="showBugDetails(${bug[0]})">Detail</button>
-                        </td>
-                    </tr>
+    // Tambahkan baris bug dengan kotak warna di sekitar teks Priority dan Status
+    $("#bug-list").append(`
+        <tr>
+            <td>${index + 1}</td> <!-- Auto-increment nomor -->
+            <td>${bug[6]}</td> <!-- 'issue' -->
+            <td>${bug[2]}</td> <!-- 'platform' -->
+            <td>${bug[7]}</td> <!-- 'reported_by' -->
+            <td>
+                <span class="priority-box ${priorityClass}">${bug[10]}</span>
+            </td> <!-- Priority dengan kotak berwarna -->
+            <td>
+                <a href="${bug[11]}" class="evidence-link" target="_blank">
+                    ${truncateText(bug[11], 25)}
+                </a>
+            </td> <!-- Evidence -->
+            <td>
+                <span class="status-box ${statusClass}">${bug[15]}</span>
+            </td> <!-- Status dengan kotak berwarna -->
+            <td>
+                <button type="button" class="btn btn-info btn-sm" 
+                    data-bs-toggle="modal" data-bs-target="#bugDetailModal" 
+                    onclick="showBugDetails(${bug[0]})">Detail</button>
+            </td>
+        </tr>
+    
                 `);
             });
         }
