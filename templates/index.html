@@ -668,9 +668,12 @@ function showBugDetails(bugId) {
 }
 
 
-    document.addEventListener("DOMContentLoaded", function () {
-        // Memulai panduan setiap kali halaman dimuat
-        introJs().start();
+     document.addEventListener("DOMContentLoaded", function () {
+        // Periksa apakah panduan sudah dilihat oleh pengguna
+        if (!localStorage.getItem("hasSeenGuide")) {
+            introJs().start();
+            localStorage.setItem("hasSeenGuide", true);
+        }
     });
 
 
