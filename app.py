@@ -291,5 +291,38 @@ def get_comments_count(bug_id):
     return jsonify({"count": count})
 
 
+@app.route("/run-scheduler", methods=["GET"])
+def run_scheduler():
+    try:
+        # Koneksi ke database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Mengambil jumlah proyek
+        cursor.execute("SELECT COUNT(*) FROM bug_management.projects;")
+        project_count = cursor.fetchone()[0]
+
+        # Menyimpan jumlah proyek ke tabel scheduler
+        cursor.execute(
+            """
+            INSERT INTO bug_management.scheduler (project_count)
+            VALUES (%s);
+            """,
+            (project_count,),
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return (
+            jsonify(
+                {"message": "Scheduler run completed", "project_count": project_count}
+            ),
+            200,
+        )
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
 if __name__ == "__main__":
     app.run(debug=True)

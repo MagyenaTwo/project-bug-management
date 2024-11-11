@@ -9,42 +9,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #e9ecef; /* Warna latar belakang */
+            background-color: #f4f6f8;
             font-family: 'Arial', sans-serif;
         }
 
         .container {
-            margin-top: 50px;
-            padding: 20px;
-            background-color: #fff; /* Warna putih untuk kontainer */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin-top: 40px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         h1 {
-            margin-bottom: 20px;
-            color: #333; /* Warna teks judul */
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+        }
+
+        .form-select, .form-control {
+            font-size: 0.9rem;
+            padding: 0.35rem 0.5rem;
         }
 
         .btn-submit {
-            background-color: #28a745; /* Warna tombol */
+            background-color: #28a745;
             color: white;
-            margin-top: 20px;
-            border-radius: 5px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            width: 100%;
+            margin-top: 10px;
         }
 
         .btn-submit:hover {
-            background-color: #218838; /* Warna hover yang lebih gelap */
-        }
-
-        .footer {
-            background-color: #343a40; /* Warna footer */
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            background-color: #218838;
         }
     </style>
 </head>
@@ -53,13 +57,13 @@
     <div class="container">
         <h1 class="text-center">Add New Bug</h1>
         <form id="add-bug-form">
-             <div class="mb-3">
-        <label for="project-select" class="form-label">Project</label>
-        <select id="project-select" class="form-select" required>
-            <option value="">Select a Project</option>
-        </select>
-    </div>
-            <div class="mb-3">
+            <div class="mb-2">
+                <label for="project-select" class="form-label">Project</label>
+                <select id="project-select" class="form-select" required>
+                    <option value="">Select a Project</option>
+                </select>
+            </div>
+            <div class="mb-2">
                 <label for="platform" class="form-label">Platform</label>
                 <select class="form-select" id="platform" required>
                     <option value="" disabled selected>Select Platform</option>
@@ -68,23 +72,23 @@
                     <option value="Web">Web</option>
                 </select>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="session" class="form-label">Session</label>
                 <input type="text" class="form-control" id="session" required>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="checking_by_developer" class="form-label">Checking by Developer</label>
-                <select class="form-select" id="checking_by_developer" >
+                <select class="form-select" id="checking_by_developer">
                     <option value="" disabled selected>Select Status</option>
                     <option value="Valid">Valid</option>
                     <option value="Not Valid">Not Valid</option>
                 </select>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="note" class="form-label">Note</label>
-                <textarea class="form-control" id="note" rows="3" ></textarea>
+                <textarea class="form-control" id="note" rows="2"></textarea>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="issue" class="form-label">Issue</label>
                 <select class="form-select" id="issue" required>
                     <option value="" disabled selected>Select Issue Type</option>
@@ -92,19 +96,19 @@
                     <option value="FE">Front End</option>
                 </select>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="summary" class="form-label">Summary</label>
-                <textarea class="form-control" id="summary" rows="3" required></textarea>
+                <textarea class="form-control" id="summary" rows="2" required></textarea>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="reported_by" class="form-label">Reported By</label>
                 <input type="text" class="form-control" id="reported_by" required>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="expectation" class="form-label">Expectation</label>
-                <textarea class="form-control" id="expectation" rows="3" required></textarea>
+                <textarea class="form-control" id="expectation" rows="2" required></textarea>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="priority" class="form-label">Priority</label>
                 <select class="form-select" id="priority" required>
                     <option value="" disabled selected>Select Priority</option>
@@ -113,15 +117,15 @@
                     <option value="Low">Low</option>
                 </select>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="evidence_status" class="form-label">Evidence Status</label>
                 <input type="text" class="form-control" id="evidence_status" required>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="retest_bug" class="form-label">Retest Bug</label>
-                <input type="text" class="form-control" id="retest_bug" >
+                <input type="text" class="form-control" id="retest_bug">
             </div>
-              <div class="mb-3">
+            <div class="mb-2">
                 <label for="status" class="form-label">Status Bug</label>
                 <select class="form-select" id="status" required>
                     <option value="" disabled selected>Select Status</option>
@@ -134,13 +138,12 @@
             <button type="submit" class="btn btn-submit">Submit Bug</button>
         </form>
     </div>
-  
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-         $(document).ready(function () {
-            // Mengambil daftar proyek saat halaman dimuat
+        $(document).ready(function () {
             $.ajax({
-                url: "/projects",  // URL untuk mengambil data proyek
+                url: "/projects",
                 type: "GET",
                 success: function (projects) {
                     projects.forEach(project => {
@@ -154,12 +157,10 @@
                 }
             });
 
-            // Event listener untuk submit form
             $("#add-bug-form").on("submit", function (e) {
-                e.preventDefault(); // Mencegah form dari pengiriman default
-
+                e.preventDefault();
                 const newBug = {
-                    project_id: $("#project-select").val(), // Menyimpan ID proyek yang dipilih
+                    project_id: $("#project-select").val(),
                     platform: $("#platform").val(),
                     session: $("#session").val(),
                     checking_by_developer: $("#checking_by_developer").val(),
@@ -179,12 +180,11 @@
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(newBug),
-                    success: function (response) {
+                    success: function () {
                         alert("Bug added successfully!");
-                        // Reset form setelah pengiriman berhasil
                         $("#add-bug-form")[0].reset();
                     },
-                    error: function (error) {
+                    error: function () {
                         alert("Error adding bug. Please try again.");
                     }
                 });

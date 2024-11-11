@@ -1,0 +1,16 @@
+name: Scheduler
+
+on:
+  schedule:
+    - cron: "10 7 * * *" # Setiap hari pada jam 14:10 waktu Jakarta (UTC+7)
+
+jobs:
+  run-scheduler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Call API endpoint
+        run: |
+          curl -X GET https://bugies.vercel.app/run-scheduler
