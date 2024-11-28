@@ -324,5 +324,116 @@ def run_scheduler():
         return jsonify({"error": str(e)}), 400
 
 
+@app.route("/my-task", methods=["GET"])
+def my_task_page():
+    return render_template("task.html")
+
+
+# Endpoint: Tambah Tugas
+@app.route("/tasks", methods=["POST"])
+def add_task():
+    data = request.json
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Query untuk menambahkan tugas
+        query = """
+        INSERT INTO bug_management.tasks (title, description, deadline, status)
+        VALUES (%s, %s, %s, %s) RETURNING id;
+        """
+        cursor.execute(
+            query,
+            (
+                data["title"],
+                data.get("description", ""),
+                data["deadline"],
+                data["status"],
+            ),
+        )
+        task_id = cursor.fetchone()[0]
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": "Task added successfully!", "task_id": task_id}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+# Endpoint: Dapatkan Semua Tugas
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Query untuk mengambil semua tugas
+        query = (
+            "SELECT id, title, description, deadline, status FROM bug_management.tasks;"
+        )
+        cursor.execute(query)
+        tasks = cursor.fetchall()
+
+        # Ubah hasil ke dalam format JSON
+        task_list = [
+            {
+                "id": task[0],
+                "title": task[1],
+                "description": task[2],
+                "deadline": str(task[3]),
+                "status": task[4],
+            }
+            for task in tasks
+        ]
+
+        cursor.close()
+        conn.close()
+
+        return jsonify(task_list), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@app.route("/task/<int:task_id>", methods=["PUT"])
+def update_task_status(task_id):
+    try:
+        updated_task = request.json
+        status = updated_task.get("status")
+
+        # Log status yang diterima untuk memverifikasi
+        print(f"Received status: {status}")
+
+        # Validasi status yang diterima
+        if status not in ["Pending", "In Progress", "Completed"]:
+            return jsonify({"error": "Invalid status"}), 400
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Update status task di tabel yang berada di schema 'bug_management'
+        cursor.execute(
+            """
+            UPDATE bug_management.tasks
+            SET status = %s
+            WHERE id = %s;
+            """,
+            (status, task_id),
+        )
+
+        conn.commit()
+
+        # Menutup koneksi dan cursor
+        cursor.close()
+        conn.close()
+
+        return jsonify({"id": task_id, "status": status}), 200
+    except Exception as e:
+        # Menangkap dan mencetak error untuk mengetahui kesalahan
+        print(f"Error: {str(e)}")
+        return jsonify({"error": str(e)}), 400
+
+
 if __name__ == "__main__":
     app.run(debug=True)
