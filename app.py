@@ -362,17 +362,14 @@ def add_task():
         return jsonify({"error": str(e)}), 400
 
 
-# Endpoint: Dapatkan Semua Tugas
 @app.route("/tasks", methods=["GET"])
 def get_tasks():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # Query untuk mengambil semua tugas
-        query = (
-            "SELECT id, title, description, deadline, status FROM bug_management.tasks;"
-        )
+        # Query untuk mengambil semua tugas dengan urutan id dari yang paling awal
+        query = "SELECT id, title, description, deadline, status FROM bug_management.tasks ORDER BY id ASC;"
         cursor.execute(query)
         tasks = cursor.fetchall()
 
