@@ -104,7 +104,7 @@ body {
         .modal-backdrop {
             opacity: 0.5; /* Atur opasitas sesuai kebutuhan */
         }
-.priority-box, .status-box {
+.priority-box, .status-box , .checked{
     padding: 0px 5px;
     border-radius: 10px;
     color: white;
@@ -120,6 +120,9 @@ body {
 .status-fixing { background-color: yellow; color: black; }
 .status-qa { background-color: lightgreen; color: black; }
 .status-done { background-color: darkgreen; }
+
+.status-Valid { background-color: darkgreen; color: white; }
+.status-NotValid { background-color: red; color: white; }
 
 .evidence-link {
     color: grey; /* Warna teks */
@@ -289,6 +292,7 @@ body {
                 <th>Issue</th>
                 <th>Platform</th>
                 <th>Summary</th>
+                <th>Checked</th>
                 <th>Priority</th>
                 <th>Evidence</th>
                 <th>Status</th>
@@ -368,6 +372,7 @@ body {
            bugs.forEach((bug, index) => {
     let priorityClass = '';
     let statusClass = '';
+    let statusChecked = '';
 
     // Tetapkan kelas berdasarkan prioritas
     switch (bug[10]) {
@@ -401,6 +406,17 @@ body {
         default:
             statusClass = '';
     }
+     // Tentukan kelas berdasarkan status bug
+    switch (bug[4]) {
+        case 'Valid':
+            statusChecked = 'status-Valid';
+            break;
+        case 'Not Valid':
+            statusChecked = 'status-NotValid';
+            break;
+        default:
+            statusChecked = '';
+    }
 
     // Tambahkan baris bug dengan kotak warna di sekitar teks Priority dan Status
     $("#bug-list").append(`
@@ -409,6 +425,9 @@ body {
             <td>${bug[6]}</td> <!-- 'issue' -->
             <td>${bug[2]}</td> <!-- 'platform' -->
             <td>${bug[7]}</td> <!-- 'reported_by' -->
+             <td>
+                <span class="checked ${statusChecked}">${bug[4]}</span>
+            </td> <!-- Status dengan kotak berwarna -->
             <td>
                 <span class="priority-box ${priorityClass}">${bug[10]}</span>
             </td> <!-- Priority dengan kotak berwarna -->
