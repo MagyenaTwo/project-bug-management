@@ -11,209 +11,238 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.1.0/introjs.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.1.0/intro.min.js"></script>
 
     <style>
-        body {
-            background-color: #f0f0f0;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+    .cartoon-theme {
+            background-color: #f4f4f9;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
         }
 
         .navbar {
-    background-color: #4b4b4b;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1030; /* Agar di atas elemen lainnya */
-}
-body {
-    padding-top: 70px; /* Sesuaikan dengan tinggi navbar agar konten tidak tertutup */
-}
-
-
-        .navbar-brand, .navbar-nav .nav-link {
-            color: #fff !important;
+            background: #29f705;
+            animation: bounceInDown 1s;
         }
 
-        .navbar-nav .nav-link:hover {
-            color: #ff9c00 !important;
-        }
-
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-header {
-            background-color: #ff8c00;
+        .navbar-nav .nav-item .nav-link {
             color: white;
-            font-weight: bold;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
         }
 
-        .btn-add {
-            background-color: #ff8c00;
-            color: white;
-            margin-bottom: 20px;
-            border-radius: 20px;
-            transition: background-color 0.2s, transform 0.2s;
+        .navbar-nav .nav-item .nav-link:hover {
+            transform: scale(1.1);
         }
 
-        .btn-add:hover {
-            background-color: #e67e22;
-            transform: translateY(-2px);
+        .cartoon-container {
+            animation: zoomIn 1s ease-out;
         }
 
-        .stats {
-            font-size: 1.5rem;
-            font-weight: bold;
+        .cartoon-card {
+            border-radius: 15px;
+            background: #fff8e1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
         }
 
-        .table th {
-            background-color: #4b4b4b;
-            color: white;
+        .cartoon-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .footer {
-            background-color: #4b4b4b;
-            color: white;
+        .cartoon-btn {
+            background-color: #0dcaf0;
+            border-radius: 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cartoon-btn:hover {
+            background-color: #ff9800;
+        }
+
+        .cartoon-select {
+            border-radius: 8px;
+            background-color: #fff3e0;
+        }
+
+        .cartoon-table th, .cartoon-table td {
             text-align: center;
-            margin-top: auto;
+            padding: 15px;
         }
-
-        @media (max-width: 768px) {
-            .stats {
-                font-size: 1.25rem;
-            }
-
-            .card {
-                margin-bottom: 15px;
-            }
-        }
-
-        .modal-backdrop {
-            opacity: 0.5; /* Atur opasitas sesuai kebutuhan */
-        }
-.priority-box, .status-box , .checked{
-    padding: 0px 5px;
-    border-radius: 10px;
-    color: white;
-    font-weight: normal;
-    display: inline-block;
-}
-
-.high-priority { background-color: red; }
-.medium-priority { background-color: yellow; color: black; }
-.low-priority { background-color: green; }
-
-.status-todo { background-color: red; }
-.status-fixing { background-color: yellow; color: black; }
-.status-qa { background-color: lightgreen; color: black; }
-.status-done { background-color: darkgreen; }
-
-.status-Valid { background-color: darkgreen; color: white; }
-.status-NotValid { background-color: red; color: white; }
-
-.evidence-link {
-    color: grey; /* Warna teks */
-    text-decoration: underline; /* Garis bawah untuk menunjukkan bahwa ini adalah tautan */
-}
-
-.evidence-link:hover {
-    color: darkblue; /* Warna saat hover */
-}
-.table-wrapper {
-    max-height: 400px; /* Sesuaikan tinggi maksimum sesuai kebutuhan */
-    overflow-y: auto; /* Aktifkan scroll vertikal untuk tbody */
-}
-
-.table-scrollable {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table-scrollable thead th {
+        .cartoon-table thead th {
     position: sticky;
     top: 0;
-    background-color: black; /* Warna latar belakang header agar terlihat jelas */
-    z-index: 1; /* Buat header tetap di atas konten tbody */
-    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+    background-color: #fff8e1; /* Memberikan latar belakang agar tetap terlihat */
+    z-index: 1; /* Memastikan header berada di atas konten lainnya */
 }
-  /* Styling untuk komentar */
-    #comments-list {
-        max-height: 150px; /* Batas tinggi yang lebih pendek untuk scrollbar */
-        overflow-y: auto; /* Scrollbar jika konten melebihi batas tinggi */
-        border: 1px solid #e0e0e0; /* Garis batas */
-        border-radius: 5px; /* Sudut melengkung */
-        padding: 5px; /* Jarak dalam yang lebih sedikit */
-        background-color: #f9f9f9; /* Warna latar belakang */
-    }
 
-    .comment {
-        padding: 5px; /* Jarak dalam komentar */
-        border-bottom: 1px solid #e0e0e0; /* Garis bawah antara komentar */
-    }
 
-    .comment:last-child {
-        border-bottom: none; /* Menghapus garis bawah pada komentar terakhir */
-    }
+        .cartoon-table tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
 
-    .comment strong {
-        display: block; /* Membuat username menjadi baris baru */
-        margin-bottom: 2px; /* Jarak bawah antara username dan teks komentar */
-    }
+        .cartoon-table tr:hover {
+            background-color: #ffecb3;
+        }
 
-    .comment small {
-        display: block; /* Membuat waktu menjadi baris baru */
-        color: #888; /* Warna abu-abu untuk waktu */
-        font-size: 0.85em; /* Ukuran font lebih kecil untuk waktu */
+        .cartoon-modal-content {
+            background-color: white;
+            border-radius: 15px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .cartoon-close-btn {
+            color: #ff5722;
+        }
+
+        .cartoon-input {
+            border-radius: 10px;
+            background-color: #fff9c4;
+        }
+
+        /* Custom navbar styles */
+.cartoon-navbar {
+    background-color: #283593; /* Warna latar belakang hijau cerah */
+    font-family: 'Comic Sans MS', cursive, sans-serif; /* Font kartun */
+    transition: background-color 0.3s ease; /* Animasi latar belakang saat hover */
+}
+
+/* Navbar brand styling */
+.cartoon-navbar .navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+/* Styling ikon bug */
+.cartoon-navbar .navbar-brand i {
+    margin-right: 8px;
+    font-size: 2rem;
+    color: #FFEB3B; /* Warna kuning cerah untuk ikon bug */
+}
+
+/* Navbar item styling */
+.cartoon-navbar .nav-link {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect untuk navbar item */
+.cartoon-navbar .nav-link:hover {
+    color: #FFEB3B; /* Mengubah warna teks saat hover */
+    transform: scale(1.1); /* Efek zoom saat hover */
+}
+
+/* Active link styling */
+.cartoon-navbar .nav-item.active .nav-link {
+    color: #FFEB3B;
+    font-weight: bold;
+}
+
+/* Navbar toggler icon */
+.cartoon-navbar .navbar-toggler-icon {
+    background-color: #283593;
+}
+
+/* Responsive navbar item adjustments */
+@media (max-width: 767px) {
+    .cartoon-navbar .navbar-nav {
+        background-color: #283593; /* Menjaga warna latar belakang di mobile */
+        padding: 1rem 0;
     }
+    .cartoon-navbar .nav-link {
+        font-size: 1.2rem; /* Ukuran font yang lebih besar di mobile */
+    }
+}
+
+        /* Animations */
+        @keyframes bounceInDown {
+            0% { transform: translateY(-1000px); }
+            60% { transform: translateY(30px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .plus-icon {
+    color: white; /* Mengubah warna simbol ➕ menjadi putih */
+}
+/* Status Bug */
+.status-todo {
+    background-color: #ff4d4d; /* Merah terang */
+    color: white;
+    font-weight: bold;
+}
+
+.status-fixing {
+    background-color: #ffe066; /* Kuning terang */
+    color: black;
+    font-weight: bold;
+}
+
+.status-qa {
+    background-color: #b2f7b2; /* Hijau muda */
+    color: black;
+    font-weight: bold;
+}
+
+.status-done {
+    background-color: #008f39; /* Hijau tua */
+    color: white;
+    font-weight: bold;
+}
+
+
     </style>
 </head>
+<body class="cartoon-theme">
+  <nav class="navbar navbar-expand-lg navbar-dark cartoon-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="https://bugies.vercel.app/#">
+            <i class="fas fa-bug"></i> Bugies
+        </a>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Bugies</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/add-bug">Add Bug</a>
-                    </li>
-                     <li class="nav-item">
-                    <a class="nav-link" href="/create-project">Project</a>  <!-- Link ke halaman Create Project -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://bugies.vercel.app/#">🏠 Home</a>
                 </li>
-                  <li class="nav-item">
-                        <a class="nav-link" href="/my-task">My Task</a>
-                    </li>
-                </ul>
-            </div>
+                <li class="nav-item">
+            <a class="nav-link" href="https://bugies.vercel.app/add-bug">
+                <i class="fas fa-plus" style="color: white;"></i> Add Bug
+            </a>
+        </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://bugies.vercel.app/create-project">📂 Project</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://bugies.vercel.app/my-task">📝 My Task</a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <div class="container mt-5">
-        <h1 class="text-center mb-4"> Dashboard</h1>
+
+    <div class="container mt-5 cartoon-container">
         <div class="row mt-4">
             <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-header">Total Bugs</div>
+                <div class="card mb-4 cartoon-card">
+                    <div class="card-header">🎯 Total Bugs</div>
                     <div class="card-body text-center">
                         <span class="stats" id="total-bugs">0</span>
                         <p>Total Number of Reported Bugs</p>
@@ -221,8 +250,8 @@ body {
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-header">Bugs Closed</div>
+                <div class="card mb-4 cartoon-card">
+                    <div class="card-header">✅ Bugs Closed</div>
                     <div class="card-body text-center">
                         <span class="stats" id="closed-bugs">0</span>
                         <p>Number of Fixed Bugs</p>
@@ -230,8 +259,8 @@ body {
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-header">Bugs Open</div>
+                <div class="card mb-4 cartoon-card">
+                    <div class="card-header">🚨 Bugs Open</div>
                     <div class="card-body text-center">
                         <span class="stats" id="open-bugs">0</span>
                         <p>Number of Open Bugs</p>
@@ -239,53 +268,49 @@ body {
                 </div>
             </div>
         </div>
-        
-        
-      <!-- Filter Section -->
-<div class="filter-container mb-4 d-flex align-items-center justify-content-between flex-wrap">
-    <!-- Tombol Add New Bug di kiri -->
-    <a href="/add-bug" class="btn btn-add btn-success d-flex align-items-center mb-2">
-        <i class="fas fa-plus me-2"></i>Add New Bug
-    </a>
 
-    <!-- Filter di kanan -->
-    <div class="filters d-flex flex-wrap align-items-center ms-auto gap-2">
-        <div class="col">
-            <select id="filter-project" class="form-select"data-intro="Select a project to filter bug findings by project." data-step="1">
-                <option value="">All Projects</option>
-            </select>
+        <!-- Filter Section -->
+        <div class="filter-container mb-4 d-flex align-items-center justify-content-between flex-wrap cartoon-filter">
+            <a href="/add-bug" class="btn btn-add btn-success d-flex align-items-center mb-2 cartoon-btn">
+                <i class="fas fa-plus me-2"></i>Add New Bug
+            </a>
+            <div class="filters d-flex flex-wrap align-items-center ms-auto gap-2 cartoon-filter-dropdowns">
+                <div class="col">
+                    <select id="filter-project" class="form-select cartoon-select">
+                        <option value="">All Projects</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select id="filter-platform" class="form-select cartoon-select">
+                        <option value="">All Platforms</option>
+                        <option value="Web">🌐 Web</option>
+                        <option value="iOS">📱 iOS</option>
+                        <option value="Android">🤖 Android</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select id="filter-priority" class="form-select cartoon-select">
+                        <option value="">All Priorities</option>
+                        <option value="High">🔥 High</option>
+                        <option value="Medium">⚠️ Medium</option>
+                        <option value="Low">✅ Low</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select id="filter-status" class="form-select cartoon-select">
+                        <option value="">All Status</option>
+                        <option value="Todo">📝 Todo</option>
+                        <option value="Fixing in Progress">🔧 Fixing in Progress</option>
+                        <option value="QA in Progress">🔍 QA in Progress</option>
+                        <option value="Done">🎉 Done</option>
+                    </select>
+                </div>
+            </div>
         </div>
-        <div class="col">
-            <select id="filter-platform" class="form-select">
-                <option value="">All Platforms</option>
-                <option value="Web">🌐 Web</option>
-                <option value="iOS">📱 iOS</option>
-                <option value="Android">🤖 Android</option>
-            </select>
-        </div>
-        <div class="col">
-            <select id="filter-priority" class="form-select">
-                <option value="">All Priorities</option>
-                <option value="High">🔥 High</option>
-                <option value="Medium">⚠️ Medium</option>
-                <option value="Low">✅ Low</option>
-            </select>
-        </div>
-        <div class="col">
-            <select id="filter-status" class="form-select">
-                <option value="">All Status</option>
-                <option value="Todo">📝 Todo</option>
-                <option value="Fixing in Progress">🔧 Fixing in Progress</option>
-                <option value="QA in Progress">🔍 QA in Progress</option>
-                <option value="Done">🎉 Done</option>
-            </select>
-        </div>
-    </div>
-</div>
 
-
-     <div class="table-wrapper" style="max-height: 400px; overflow-y: auto;">
-    <table class="table table-striped table-scrollable">
+        <!-- Bug Table Section -->
+<div class="table-wrapper cartoon-table" style="max-height: 400px; overflow-y: auto;">
+    <table class="table table-striped table-scrollable cartoon-table">
         <thead>
             <tr>
                 <th>No</th>
@@ -306,43 +331,42 @@ body {
 </div>
 
 
-<!-- Modal untuk menampilkan detail bug -->
-<div class="modal fade" id="bugDetailModal" tabindex="-1" aria-labelledby="bugDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="bugDetailModalLabel">Bug Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="bug-details">
-                    <!-- Detail bug akan ditambahkan di sini -->
+        <!-- Modal for Bug Details -->
+        <div class="modal fade cartoon-modal" id="bugDetailModal" tabindex="-1" aria-labelledby="bugDetailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content cartoon-modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bugDetailModalLabel">🎮 Bug Details</h5>
+                        <button type="button" class="btn-close cartoon-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="bug-details">
+                            <!-- Detail bug akan ditambahkan di sini -->
+                        </div>
+                        <div id="comments-section" class="mt-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5>💬 Comments <span id="comments-count">(0)</span></h5>
+                            </div>
+                            <div id="comments-list" class="mb-3">
+                                <!-- Komentar akan ditambahkan di sini -->
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="comment-username" class="form-label">Username</label>
+                                <input type="text" id="comment-username" class="form-control cartoon-input" placeholder="Enter your name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment-text" class="form-label">Comment</label>
+                                <textarea id="comment-text" class="form-control cartoon-input" rows="2" placeholder="Write your comment"></textarea>
+                            </div>
+                            <button id="addComment" class="btn btn-primary cartoon-btn">Add Comment</button>
+                        </div>
+                        <button id="saveChanges" class="btn btn-primary mt-3 cartoon-save-btn" style="display:none;">Save Changes</button>
+                    </div>
                 </div>
-
-                <div id="comments-section" class="mt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5>Comments <span id="comments-count">(0)</span></h5>
-                    </div>
-                    <div id="comments-list" class="mb-3">
-                        <!-- Komentar akan ditambahkan di sini -->
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="comment-username" class="form-label">Username</label>
-                        <input type="text" id="comment-username" class="form-control" placeholder="Enter your name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="comment-text" class="form-label">Comment</label>
-                        <textarea id="comment-text" class="form-control" rows="2" placeholder="Write your comment"></textarea>
-                    </div>
-                    <button id="addComment" class="btn btn-primary">Add Comment</button>
-                </div>
-
-                <button id="saveChanges" class="btn btn-primary mt-3" style="display:none;">Save Changes</button>
             </div>
         </div>
     </div>
-</div>
 
  <script>
    $(document).ready(function () {
@@ -697,11 +721,9 @@ function showBugDetails(bugId) {
             localStorage.setItem("hasSeenGuide", true);
         }
     });
-
-
-
-
     </script>
+
+
 </body>
 
 </html>
