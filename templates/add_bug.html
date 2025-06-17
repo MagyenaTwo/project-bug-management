@@ -5,23 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Bug</title>
+      <link rel="stylesheet" href="static/css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    
     <style>
-        body {
-            background-color: #f4f6f8;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .container {
+       
+        .containers {
             max-width: 600px;
-            margin-top: 40px;
+            margin: 40px auto;
+            margin-top: 100px;
             padding: 15px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
-
+      
         h1 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
@@ -38,12 +37,32 @@
         }
 
         .btn-submit {
-            background-color: #28a745;
+            
+            background: linear-gradient(90deg, #ff6ec4, #7873f5);
             color: white;
             border-radius: 4px;
             font-size: 0.9rem;
             padding: 0.5rem 1rem;
-            width: 100%;
+            width: 20%;
+            margin-top: 10px;
+        }
+          .btn-submit {
+            
+            background: linear-gradient(90deg,#7873f5);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            width: 20%;
+            margin-top: 10px;
+        }  .btn-cancel {
+            
+            background: linear-gradient(90deg, #e43b3b);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            width: 20%;
             margin-top: 10px;
         }
 
@@ -54,8 +73,40 @@
 </head>
 
 <body>
+
+<body class="cartoon-theme">
+  <nav class="navbar navbar-expand-lg navbar-dark cartoon-navbar fixed-top">
     <div class="container">
-        <h1 class="text-center">Add New Bug</h1>
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-bug"></i> Bugies
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">🏠 Home</a>
+                </li>
+                <li class="nav-item">
+            <a class="nav-link" href="/add-bug">
+                <i class="fas fa-plus" style="color: white;"></i> Add Bug
+            </a>
+        </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/create-project">📂 Project</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my-task">📝 My Task</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <div class="containers">
+        <h2>Create New Bug</h2>
         <form id="add-bug-form">
             <div class="mb-2">
                 <label for="project-select" class="form-label">Project</label>
@@ -129,67 +180,119 @@
                 <label for="status" class="form-label">Status Bug</label>
                 <select class="form-select" id="status" required>
                     <option value="" disabled selected>Select Status</option>
-                    <option value="Todo">TODO</option>
+                    <option value="Open">Open</option>
                     <option value="Fixing in Progress">Fixing In Progress</option>
                     <option value="Qa in Progress">Qa in Progress</option>
                     <option value="Done">Done</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-submit">Submit Bug</button>
+            <button type="submit" class="btn btn-submit">Create</button>
+            <button type="button" class="btn btn-cancel" id="btn-cancel">Cancel</button>
         </form>
     </div>
+     <div id="success-message" class="alert alert-success mt-3 d-none" role="alert">
+            Project successfully created!
+        </div>
+
+        <div id="error-message" class="alert alert-danger mt-3 d-none" role="alert">
+            There was an error creating the project. Please try again.
+        </div>
+    </div>
+   <!-- Modal Notifikasi Sukses -->
+<div class="modal fade" id="successNotificationModal" tabindex="-1" aria-labelledby="successNotificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Ubah baris ini -->
+            <div class="modal-header modal-header-gradient text-white">
+                <h5 class="modal-title" id="successNotificationModalLabel">✔️ Success!</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Bug Successfully Created</p>
+                <i class="fas fa-check-circle fa-4x text-success my-3"></i>
+            </div>
+        </div>
+    </div>
+</div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        $(document).ready(function () {
-            $.ajax({
-                url: "/projects",
-                type: "GET",
-                success: function (projects) {
-                    projects.forEach(project => {
-                        $("#project-select").append(
-                            `<option value="${project.id}">${project.name}</option>`
-                        );
-                    });
-                },
-                error: function () {
-                    alert("Failed to load projects.");
-                }
+       $(document).ready(function () {
+    // Kode untuk fetching projects
+    $.ajax({
+        url: "/projects",
+        type: "GET",
+        success: function (projects) {
+            projects.forEach(project => {
+                $("#project-select").append(
+                    `<option value="${project.id}">${project.name}</option>`
+                );
             });
+            $("#error-message").addClass("d-none");
+        },
+        error: function () {
+            $("#error-message").text("Failed to load projects.").removeClass("d-none");
+            $("#success-message").addClass("d-none");
+        }
+    });
 
-            $("#add-bug-form").on("submit", function (e) {
-                e.preventDefault();
-                const newBug = {
-                    project_id: $("#project-select").val(),
-                    platform: $("#platform").val(),
-                    session: $("#session").val(),
-                    checking_by_developer: $("#checking_by_developer").val(),
-                    note: $("#note").val(),
-                    issue: $("#issue").val(),
-                    summary: $("#summary").val(),
-                    reported_by: $("#reported_by").val(),
-                    expectation: $("#expectation").val(),
-                    priority: $("#priority").val(),
-                    evidence_status: $("#evidence_status").val(),
-                    retest_bug: $("#retest_bug").val(),
-                    status: $("#status").val()
-                };
+    // Logika submit form "Add Bug"
+    $("#add-bug-form").on("submit", function (e) {
+        e.preventDefault();
+        const newBug = {
+            project_id: $("#project-select").val(),
+            platform: $("#platform").val(),
+            session: $("#session").val(),
+            checking_by_developer: $("#checking_by_developer").val(),
+            note: $("#note").val(),
+            issue: $("#issue").val(),
+            summary: $("#summary").val(),
+            reported_by: $("#reported_by").val(),
+            expectation: $("#expectation").val(),
+            priority: $("#priority").val(),
+            evidence_status: $("#evidence_status").val(),
+            retest_bug: $("#retest_bug").val(),
+            status: $("#status").val()
+        };
 
-                $.ajax({
-                    url: "/bugs",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(newBug),
-                    success: function () {
-                        alert("Bug added successfully!");
-                        $("#add-bug-form")[0].reset();
-                    },
-                    error: function () {
-                        alert("Error adding bug. Please try again.");
-                    }
-                });
-            });
+        $.ajax({
+            url: "/bugs",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(newBug),
+            success: function () {
+                // Sembunyikan pesan error di halaman (jika ada)
+                $("#error-message").addClass("d-none");
+                // Reset formulir
+                $("#add-bug-form")[0].reset();
+
+                // Tampilkan modal notifikasi sukses
+                const successModal = new bootstrap.Modal(document.getElementById('successNotificationModal'));
+                successModal.show();
+
+                // Atur timer untuk redirect setelah modal tampil sejenak
+                setTimeout(function() {
+                    successModal.hide(); // Sembunyikan modal
+                    window.location.href = "/"; // Redirect ke halaman utama
+                }, 5000); // Redirect setelah 1.5 detik
+            },
+            error: function () {
+                // Tampilkan pesan error di halaman jika gagal submit
+                $("#error-message").text("Error adding bug. Please try again.").removeClass("d-none");
+                $("#success-message").addClass("d-none"); // Pastikan success message tersembunyi
+            }
         });
+    });
+
+    $("#btn-cancel").on("click", function() {
+        $("#add-bug-form")[0].reset();
+        window.location.href = "/";
+        $("#success-message").addClass("d-none");
+        $("#error-message").addClass("d-none");
+    });
+});
     </script>
 </body>
 

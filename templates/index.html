@@ -11,204 +11,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.1.0/introjs.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/index.css">
 
-    <style>
-    .cartoon-theme {
-            background-color: #f4f4f9;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-        }
-
-        .navbar {
-            background: #29f705;
-            animation: bounceInDown 1s;
-        }
-
-        .navbar-nav .nav-item .nav-link {
-            color: white;
-            font-size: 1.2rem;
-            transition: transform 0.2s;
-        }
-
-        .navbar-nav .nav-item .nav-link:hover {
-            transform: scale(1.1);
-        }
-
-        .cartoon-container {
-            animation: zoomIn 1s ease-out;
-        }
-
-        .cartoon-card {
-            border-radius: 15px;
-            background: #fff8e1;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .cartoon-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .cartoon-btn {
-            background-color: #0dcaf0;
-            border-radius: 12px;
-            transition: background-color 0.3s ease;
-        }
-
-        .cartoon-btn:hover {
-            background-color: #ff9800;
-        }
-
-        .cartoon-select {
-            border-radius: 8px;
-            background-color: #fff3e0;
-        }
-
-        .cartoon-table th, .cartoon-table td {
-            text-align: center;
-            padding: 15px;
-        }
-        .cartoon-table thead th {
-    position: sticky;
-    top: 0;
-    background-color: #fff8e1; /* Memberikan latar belakang agar tetap terlihat */
-    z-index: 1; /* Memastikan header berada di atas konten lainnya */
-}
-
-
-        .cartoon-table tr:nth-child(even) {
-            background-color: #f7f7f7;
-        }
-
-        .cartoon-table tr:hover {
-            background-color: #ffecb3;
-        }
-
-        .cartoon-modal-content {
-            background-color: white;
-            border-radius: 15px;
-            animation: fadeInUp 0.5s ease;
-        }
-
-        .cartoon-close-btn {
-            color: #ff5722;
-        }
-
-        .cartoon-input {
-            border-radius: 10px;
-            background-color: #fff9c4;
-        }
-
-        /* Custom navbar styles */
-.cartoon-navbar {
-    background-color: #283593; /* Warna latar belakang hijau cerah */
-    font-family: 'Comic Sans MS', cursive, sans-serif; /* Font kartun */
-    transition: background-color 0.3s ease; /* Animasi latar belakang saat hover */
-}
-
-/* Navbar brand styling */
-.cartoon-navbar .navbar-brand {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #fff;
-    display: flex;
-    align-items: center;
-}
-
-/* Styling ikon bug */
-.cartoon-navbar .navbar-brand i {
-    margin-right: 8px;
-    font-size: 2rem;
-    color: #FFEB3B; /* Warna kuning cerah untuk ikon bug */
-}
-
-/* Navbar item styling */
-.cartoon-navbar .nav-link {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #fff;
-    transition: color 0.3s ease, transform 0.2s ease;
-}
-
-/* Hover effect untuk navbar item */
-.cartoon-navbar .nav-link:hover {
-    color: #FFEB3B; /* Mengubah warna teks saat hover */
-    transform: scale(1.1); /* Efek zoom saat hover */
-}
-
-/* Active link styling */
-.cartoon-navbar .nav-item.active .nav-link {
-    color: #FFEB3B;
-    font-weight: bold;
-}
-
-/* Navbar toggler icon */
-.cartoon-navbar .navbar-toggler-icon {
-    background-color: #283593;
-}
-
-/* Responsive navbar item adjustments */
-@media (max-width: 767px) {
-    .cartoon-navbar .navbar-nav {
-        background-color: #283593; /* Menjaga warna latar belakang di mobile */
-        padding: 1rem 0;
-    }
-    .cartoon-navbar .nav-link {
-        font-size: 1.2rem; /* Ukuran font yang lebih besar di mobile */
-    }
-}
-
-        /* Animations */
-        @keyframes bounceInDown {
-            0% { transform: translateY(-1000px); }
-            60% { transform: translateY(30px); }
-            100% { transform: translateY(0); }
-        }
-
-        @keyframes zoomIn {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .plus-icon {
-    color: white; /* Mengubah warna simbol ➕ menjadi putih */
-}
-/* Status Bug */
-.status-todo {
-    background-color: #ff4d4d; /* Merah terang */
-    color: white;
-    font-weight: bold;
-}
-
-.status-fixing {
-    background-color: #ffe066; /* Kuning terang */
-    color: black;
-    font-weight: bold;
-}
-
-.status-qa {
-    background-color: #b2f7b2; /* Hijau muda */
-    color: black;
-    font-weight: bold;
-}
-
-.status-done {
-    background-color: #008f39; /* Hijau tua */
-    color: white;
-    font-weight: bold;
-}
-
-
-    </style>
 </head>
 <body class="cartoon-theme">
-  <nav class="navbar navbar-expand-lg navbar-dark cartoon-navbar">
+  <nav class="navbar navbar-expand-lg navbar-dark cartoon-navbar fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="https://bugies.vercel.app/#">
+        <a class="navbar-brand" href="#">
             <i class="fas fa-bug"></i> Bugies
         </a>
 
@@ -219,18 +29,18 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="https://bugies.vercel.app/#">🏠 Home</a>
+                    <a class="nav-link" href="/">🏠 Home</a>
                 </li>
                 <li class="nav-item">
-            <a class="nav-link" href="https://bugies.vercel.app/add-bug">
+            <a class="nav-link" href="/add-bug">
                 <i class="fas fa-plus" style="color: white;"></i> Add Bug
             </a>
         </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://bugies.vercel.app/create-project">📂 Project</a>
+                    <a class="nav-link" href="/create-project">📂 Project</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://bugies.vercel.app/my-task">📝 My Task</a>
+                    <a class="nav-link" href="/my-task">📝 My Task</a>
                 </li>
             </ul>
         </div>
@@ -299,7 +109,7 @@
                 <div class="col">
                     <select id="filter-status" class="form-select cartoon-select">
                         <option value="">All Status</option>
-                        <option value="Todo">📝 Todo</option>
+                        <option value="Open">📝 Open</option>
                         <option value="Fixing in Progress">🔧 Fixing in Progress</option>
                         <option value="QA in Progress">🔍 QA in Progress</option>
                         <option value="Done">🎉 Done</option>
@@ -336,7 +146,10 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content cartoon-modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="bugDetailModalLabel">🎮 Bug Details</h5>
+                       <div>
+                    <h5 class="modal-title" id="bugDetailModalLabel">🎮 Bug Details</h5>
+                    <p id="modal-bug-summary" class="text-muted mb-0"></p>
+                </div>
                         <button type="button" class="btn-close cartoon-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -344,23 +157,30 @@
                             <!-- Detail bug akan ditambahkan di sini -->
                         </div>
                         <div id="comments-section" class="mt-4">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5>💬 Comments <span id="comments-count">(0)</span></h5>
-                            </div>
-                            <div id="comments-list" class="mb-3">
-                                <!-- Komentar akan ditambahkan di sini -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5>
+                            💬 Comments <span id="comments-count">(0)</span>
+                            <button class="btn btn-link p-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#commentsCollapse" aria-expanded="true" aria-controls="commentsCollapse">
+                                <i class="fas fa-chevron-down" id="comments-toggle-icon"></i>
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div class="collapse" id="commentsCollapse">
+                        <div id="comments-list" class="mb-3">
                             </div>
 
-                            <div class="mb-3">
-                                <label for="comment-username" class="form-label">Username</label>
-                                <input type="text" id="comment-username" class="form-control cartoon-input" placeholder="Enter your name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="comment-text" class="form-label">Comment</label>
-                                <textarea id="comment-text" class="form-control cartoon-input" rows="2" placeholder="Write your comment"></textarea>
-                            </div>
-                            <button id="addComment" class="btn btn-primary cartoon-btn">Add Comment</button>
+                        <div class="mb-3">
+                            <label for="comment-username" class="form-label">Username</label>
+                            <input type="text" id="comment-username" class="form-control cartoon-input" placeholder="Enter your name">
                         </div>
+                        <div class="mb-3">
+                            <label for="comment-text" class="form-label">Comment</label>
+                            <textarea id="comment-text" class="form-control cartoon-input" rows="2" placeholder="Write your comment"></textarea>
+                        </div>
+                        <button id="addComment" class="btn btn-primary cartoon-btn">Add Comment</button>
+                    </div>
+                </div>
                         <button id="saveChanges" class="btn btn-primary mt-3 cartoon-save-btn" style="display:none;">Save Changes</button>
                     </div>
                 </div>
@@ -369,6 +189,24 @@
     </div>
 
  <script>
+
+$(document).ready(function () {
+   
+    $('#commentsCollapse').on('shown.bs.collapse', function () {
+        $('#comments-toggle-icon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+    });
+
+    $('#commentsCollapse').on('hidden.bs.collapse', function () {
+        $('#comments-toggle-icon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+    });
+});
+function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+        return text.substring(0, maxLength) + '...';
+    }
+    return text;
+}
+
    $(document).ready(function () {
     // Fetching data bug dari server
     $.get("/bugs", function (data) {
@@ -378,7 +216,7 @@
         // Hitung total, open, dan closed bugs dengan logika baru
         let totalBugs = data.length;
         let closedBugs = data.filter(bug => bug[15] === 'Done').length; // 'Done' dianggap closed
-        let openBugs = data.filter(bug => bug[15] === 'Todo').length;   // 'Todo' dianggap open
+        let openBugs = data.filter(bug => bug[15] === 'Open').length;   // 'Todo' dianggap open
 
         // Update UI dengan data yang dihitung
         $("#total-bugs").text(totalBugs);
@@ -415,8 +253,8 @@
 
     // Tentukan kelas berdasarkan status bug
     switch (bug[15]) {
-        case 'Todo':
-            statusClass = 'status-todo';
+        case 'Open':
+            statusClass = 'status-open';
             break;
         case 'Fixing in Progress':
             statusClass = 'status-fixing';
@@ -442,13 +280,14 @@
             statusChecked = '';
     }
 
+const truncatedSummary = truncateText(bug[7], 50); 
     // Tambahkan baris bug dengan kotak warna di sekitar teks Priority dan Status
     $("#bug-list").append(`
         <tr>
             <td>${index + 1}</td> <!-- Auto-increment nomor -->
             <td>${bug[6]}</td> <!-- 'issue' -->
             <td>${bug[2]}</td> <!-- 'platform' -->
-            <td>${bug[7]}</td> <!-- 'reported_by' -->
+            <td>${truncatedSummary}</td> <!-- 'Summary' -->
              <td>
                 <span class="checked ${statusChecked}">${bug[4]}</span>
             </td> <!-- Status dengan kotak berwarna -->
@@ -464,7 +303,7 @@
                 <span class="status-box ${statusClass}">${bug[15]}</span>
             </td> <!-- Status dengan kotak berwarna -->
             <td>
-                <button type="button" class="btn btn-info btn-sm" 
+                <button type="button" class="btn btn-warning btn-sm" 
                     data-bs-toggle="modal" data-bs-target="#bugDetailModal" 
                     onclick="showBugDetails(${bug[0]})">Detail</button>
             </td>
@@ -530,8 +369,11 @@
 function showBugDetails(bugId) {
     $.get(`/bug/${bugId}`, function (data) {
         if (data.error) {
-            $("#bug-details").html(`<p>${data.error}</p>`); // Pesan kesalahan jika bug tidak ditemukan
+            $("#bug-details").html(`<p>${data.error}</p>`); 
+            $("modal-bug-summary").text('');
         } else {
+            $("#modal-bug-summary").text(data.summary || 'No Summary Provided');
+
             $("#bug-details").html(`
                 <div>
                     <label>ID:</label>
@@ -604,7 +446,7 @@ function showBugDetails(bugId) {
                 <div>
                     <label>Status:</label>
                     <select class="form-select" name="status">
-                        <option value="Todo" ${data.status === 'Todo' ? 'selected' : ''}>Todo</option>
+                        <option value="Open" ${data.status === 'Open' ? 'selected' : ''}>Open</option>
                         <option value="Fixing in Progress" ${data.status === 'Fixing in Progress' ? 'selected' : ''}>Fixing in Progress</option>
                         <option value="QA in Progress" ${data.status === 'QA in Progress' ? 'selected' : ''}>QA in Progress</option>
                         <option value="Done" ${data.status === 'Done' ? 'selected' : ''}>Done</option>
