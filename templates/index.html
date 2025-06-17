@@ -318,15 +318,15 @@ const truncatedSummary = truncateText(bug[7], 50);
     let platformValue = $("#filter-platform").val();
     let priorityValue = $("#filter-priority").val();
     let statusValue = $("#filter-status").val();
-    let projectValue = $("#filter-project").val(); // Ambil nilai filter proyek
+    let projectValue = $("#filter-project").val(); 
 
 
     let filteredBugs = window.bugData.filter(bug => {
     
-        let platformMatch = platformValue === "" || bug[2] === platformValue; // Indeks platform
-        let priorityMatch = priorityValue === "" || bug[10] === priorityValue; // Indeks priority
-        let statusMatch = statusValue === "" || bug[15] === statusValue; // Indeks status
-        let projectMatch = projectValue === "" || Number(bug[16]) === Number(projectValue); // Indeks proyek (bug[16])
+        let platformMatch = platformValue === "" || bug[2] === platformValue; 
+        let priorityMatch = priorityValue === "" || bug[10] === priorityValue; 
+        let statusMatch = statusValue === "" || bug[15] === statusValue;
+        let projectMatch = projectValue === "" || Number(bug[16]) === Number(projectValue); 
 
       
 
@@ -334,30 +334,25 @@ const truncatedSummary = truncateText(bug[7], 50);
     });
 
 
-    displayBugs(filteredBugs); // Tampilkan bug yang sudah difilter
+    displayBugs(filteredBugs); 
 }
 
-
-        // Ambil data proyek dan tambahkan ke dropdown
         $.get("/projects", function (projects) {
             projects.forEach(project => {
                 $("#filter-project").append(`<option value="${project.id}">${project.name}</option>`);
             });
         });
 
-        // Event listeners for filters
         $("#filter-platform, #filter-priority, #filter-status, #filter-project").on("change", filterBugs);
     });
 
-    // Reset details ketika modal ditutup
     $('#bugDetailModal').on('hidden.bs.modal', function () {
-        $("#bug-details").html(""); // Hapus konten ketika modal ditutup
+        $("#bug-details").html(""); 
     });
 
-    // Fungsi untuk memotong teks
     function truncateText(text, length) {
         if (text.length > length) {
-            return text.substring(0, length) + '...'; // Tambahkan ellipsis
+            return text.substring(0, length) + '...'; 
         }
         return text;
     }
